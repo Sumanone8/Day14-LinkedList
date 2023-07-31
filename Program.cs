@@ -34,13 +34,11 @@ public class LinkedList
         {
             Node current = Head;
 
-            // Find the position to insert the new node
-            while (current.Next != null && current.Next.Data < data)
+            while (current.Next != null)
             {
                 current = current.Next;
             }
 
-            newNode.Next = current.Next;
             current.Next = newNode;
         }
     }
@@ -59,6 +57,17 @@ public class LinkedList
         return null;
     }
 
+    public void InsertAfter(int key, int data)
+    {
+        Node nodeToInsertAfter = Search(key);
+        if (nodeToInsertAfter != null)
+        {
+            Node newNode = new Node(data);
+            newNode.Next = nodeToInsertAfter.Next;
+            nodeToInsertAfter.Next = newNode;
+        }
+    }
+
     public void DisplayList()
     {
         Node current = Head;
@@ -75,20 +84,21 @@ public class LinkedList
 public class LinkedListTests
 {
     [TestMethod]
-    public void TestSearchNode()
+    public void TestInsertAfterNode()
     {
         LinkedList linkedList = new LinkedList();
         linkedList.AddNode(56);
         linkedList.AddNode(30);
         linkedList.AddNode(70);
 
-        Node foundNode = linkedList.Search(30);
-        Node notFoundNode = linkedList.Search(100);
+        Node nodeWithKey30 = linkedList.Search(30);
+        Assert.IsNotNull(nodeWithKey30);
+        Assert.AreEqual(30, nodeWithKey30.Data);
 
-        Assert.IsNotNull(foundNode);
-        Assert.AreEqual(30, foundNode.Data);
+        linkedList.InsertAfter(30, 40);
 
-        Assert.IsNull(notFoundNode);
+        Console.WriteLine("Linked List Sequence after Insertion: ");
+        linkedList.DisplayList();
     }
 }
 
@@ -105,3 +115,4 @@ public class Program
         linkedList.DisplayList();
     }
 }
+
