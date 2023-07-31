@@ -31,8 +31,12 @@ public class LinkedList
         }
         else
         {
-            newNode.Next = Head;
-            Head = newNode;
+            Node current = Head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = newNode;
         }
     }
 
@@ -53,9 +57,9 @@ public class Program
     public static void Main()
     {
         LinkedList linkedList = new LinkedList();
-        linkedList.AddNode(70);
-        linkedList.AddNode(30);
         linkedList.AddNode(56);
+        linkedList.AddNode(30);
+        linkedList.AddNode(70);
 
         Console.WriteLine("Linked List Sequence: ");
         linkedList.DisplayList();
