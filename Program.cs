@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 public class Node
 {
@@ -44,22 +45,18 @@ public class LinkedList
         }
     }
 
-    public void PopLast()
+    public Node Search(int key)
     {
-        if (Head == null || Head.Next == null)
-        {
-            // If the list is empty or has only one element, there is nothing to remove.
-            return;
-        }
-
         Node current = Head;
-        while (current.Next.Next != null)
+        while (current != null)
         {
+            if (current.Data == key)
+            {
+                return current;
+            }
             current = current.Next;
         }
-
-        // current points to the second-last node
-        current.Next = null;
+        return null;
     }
 
     public void DisplayList()
@@ -74,6 +71,27 @@ public class LinkedList
     }
 }
 
+[TestClass]
+public class LinkedListTests
+{
+    [TestMethod]
+    public void TestSearchNode()
+    {
+        LinkedList linkedList = new LinkedList();
+        linkedList.AddNode(56);
+        linkedList.AddNode(30);
+        linkedList.AddNode(70);
+
+        Node foundNode = linkedList.Search(30);
+        Node notFoundNode = linkedList.Search(100);
+
+        Assert.IsNotNull(foundNode);
+        Assert.AreEqual(30, foundNode.Data);
+
+        Assert.IsNull(notFoundNode);
+    }
+}
+
 public class Program
 {
     public static void Main()
@@ -84,11 +102,6 @@ public class Program
         linkedList.AddNode(70);
 
         Console.WriteLine("Linked List Sequence: ");
-        linkedList.DisplayList();
-
-        linkedList.PopLast();
-
-        Console.WriteLine("Linked List after popLast: ");
         linkedList.DisplayList();
     }
 }
