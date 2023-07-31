@@ -44,12 +44,22 @@ public class LinkedList
         }
     }
 
-    public void Pop()
+    public void PopLast()
     {
-        if (Head != null)
+        if (Head == null || Head.Next == null)
         {
-            Head = Head.Next;
+            // If the list is empty or has only one element, there is nothing to remove.
+            return;
         }
+
+        Node current = Head;
+        while (current.Next.Next != null)
+        {
+            current = current.Next;
+        }
+
+        // current points to the second-last node
+        current.Next = null;
     }
 
     public void DisplayList()
@@ -76,9 +86,9 @@ public class Program
         Console.WriteLine("Linked List Sequence: ");
         linkedList.DisplayList();
 
-        linkedList.Pop();
+        linkedList.PopLast();
 
-        Console.WriteLine("Linked List after pop: ");
+        Console.WriteLine("Linked List after popLast: ");
         linkedList.DisplayList();
     }
 }
