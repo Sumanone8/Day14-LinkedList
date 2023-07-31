@@ -1,113 +1,51 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-public class Node
+public class Node<T> where T : IComparable<T>
 {
-    public int Data;
-    public Node Next;
+    public T Data;
+    public Node<T> Next;
 
-    public Node(int data)
+    public Node(T data)
     {
         Data = data;
         Next = null;
     }
 }
 
-public class LinkedList
+public class SortedLinkedList<T> where T : IComparable<T>
 {
-    public Node Head;
+    public Node<T> Head;
 
-    public LinkedList()
+    public SortedLinkedList()
     {
         Head = null;
     }
 
-    public void AddNode(int data)
+    public void Add(T data)
     {
-        Node newNode = new Node(data);
+        Node<T> newNode = new Node<T>(data);
 
-        if (Head == null)
+        if (Head == null || data.CompareTo(Head.Data) < 0)
         {
+            newNode.Next = Head;
             Head = newNode;
         }
         else
         {
-            Node current = Head;
-
-            while (current.Next != null)
+            Node<T> current = Head;
+            while (current.Next != null && data.CompareTo(current.Next.Data) >= 0)
             {
                 current = current.Next;
             }
 
+            newNode.Next = current.Next;
             current.Next = newNode;
         }
     }
 
-    public Node Search(int key)
-    {
-        Node current = Head;
-        while (current != null)
-        {
-            if (current.Data == key)
-            {
-                return current;
-            }
-            current = current.Next;
-        }
-        return null;
-    }
-
-    public void InsertAfter(int key, int data)
-    {
-        Node nodeToInsertAfter = Search(key);
-        if (nodeToInsertAfter != null)
-        {
-            Node newNode = new Node(data);
-            newNode.Next = nodeToInsertAfter.Next;
-            nodeToInsertAfter.Next = newNode;
-        }
-    }
-
-    public void DeleteNode(int key)
-    {
-        if (Head == null)
-        {
-            return;
-        }
-
-        if (Head.Data == key)
-        {
-            Head = Head.Next;
-            return;
-        }
-
-        Node current = Head;
-        while (current.Next != null)
-        {
-            if (current.Next.Data == key)
-            {
-                current.Next = current.Next.Next;
-                return;
-            }
-            current = current.Next;
-        }
-    }
-
-    public int Size()
-    {
-        int count = 0;
-        Node current = Head;
-        while (current != null)
-        {
-            count++;
-            current = current.Next;
-        }
-        return count;
-    }
-
     public void DisplayList()
     {
-        Node current = Head;
+        Node<T> current = Head;
         while (current != null)
         {
             Console.Write(current.Data + "->");
@@ -117,40 +55,17 @@ public class LinkedList
     }
 }
 
-[TestClass]
-public class LinkedListTests
-{
-    [TestMethod]
-    public void TestDeleteNodeAndSize()
-    {
-        LinkedList linkedList = new LinkedList();
-        linkedList.AddNode(56);
-        linkedList.AddNode(30);
-        linkedList.AddNode(40);
-        linkedList.AddNode(70);
-
-        linkedList.DeleteNode(40);
-
-        Console.WriteLine("Linked List Sequence after Deletion: ");
-        linkedList.DisplayList();
-
-        int size = linkedList.Size();
-        Assert.AreEqual(3, size);
-        Console.WriteLine("Linked List Size: " + size);
-    }
-}
-
 public class Program
 {
     public static void Main()
     {
-        LinkedList linkedList = new LinkedList();
-        linkedList.AddNode(56);
-        linkedList.AddNode(30);
-        linkedList.AddNode(40);
-        linkedList.AddNode(70);
+        SortedLinkedList<int> sortedList = new SortedLinkedList<int>();
+        sortedList.Add(56);
+        sortedList.Add(30);
+        sortedList.Add(40);
+        sortedList.Add(70);
 
-        Console.WriteLine("Linked List Sequence: ");
-        linkedList.DisplayList();
+        Console.WriteLine("Sorted Linked List Sequence: ");
+        sortedList.DisplayList();
     }
 }
