@@ -68,6 +68,43 @@ public class LinkedList
         }
     }
 
+    public void DeleteNode(int key)
+    {
+        if (Head == null)
+        {
+            return;
+        }
+
+        if (Head.Data == key)
+        {
+            Head = Head.Next;
+            return;
+        }
+
+        Node current = Head;
+        while (current.Next != null)
+        {
+            if (current.Next.Data == key)
+            {
+                current.Next = current.Next.Next;
+                return;
+            }
+            current = current.Next;
+        }
+    }
+
+    public int Size()
+    {
+        int count = 0;
+        Node current = Head;
+        while (current != null)
+        {
+            count++;
+            current = current.Next;
+        }
+        return count;
+    }
+
     public void DisplayList()
     {
         Node current = Head;
@@ -84,21 +121,22 @@ public class LinkedList
 public class LinkedListTests
 {
     [TestMethod]
-    public void TestInsertAfterNode()
+    public void TestDeleteNodeAndSize()
     {
         LinkedList linkedList = new LinkedList();
         linkedList.AddNode(56);
         linkedList.AddNode(30);
+        linkedList.AddNode(40);
         linkedList.AddNode(70);
 
-        Node nodeWithKey30 = linkedList.Search(30);
-        Assert.IsNotNull(nodeWithKey30);
-        Assert.AreEqual(30, nodeWithKey30.Data);
+        linkedList.DeleteNode(40);
 
-        linkedList.InsertAfter(30, 40);
-
-        Console.WriteLine("Linked List Sequence after Insertion: ");
+        Console.WriteLine("Linked List Sequence after Deletion: ");
         linkedList.DisplayList();
+
+        int size = linkedList.Size();
+        Assert.AreEqual(3, size);
+        Console.WriteLine("Linked List Size: " + size);
     }
 }
 
@@ -109,10 +147,10 @@ public class Program
         LinkedList linkedList = new LinkedList();
         linkedList.AddNode(56);
         linkedList.AddNode(30);
+        linkedList.AddNode(40);
         linkedList.AddNode(70);
 
         Console.WriteLine("Linked List Sequence: ");
         linkedList.DisplayList();
     }
 }
-
